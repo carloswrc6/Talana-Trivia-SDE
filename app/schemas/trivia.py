@@ -31,6 +31,7 @@ class TriviaParticipationCreate(BaseModel):
     user_id: int
 
 class TriviaParticipationOut(BaseModel):
+    id: int
     trivia_id: int
     user_id: int
     score: int

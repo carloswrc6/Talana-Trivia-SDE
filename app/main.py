@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from app.database import engine, Base
-from app.routes import users, trivias, questions, trivia_participation
+from app.routes import users, trivias, questions, trivia_participation, ranking
 
 # Importar todos los modelos para registrar relaciones en SQLAlchemy
 from app.models import user, trivia, answer, question
@@ -58,3 +58,4 @@ app.include_router(users.router)
 app.include_router(questions.router)
 app.include_router(trivias.router)
 app.include_router(trivia_participation.router)
+app.include_router(ranking.router)

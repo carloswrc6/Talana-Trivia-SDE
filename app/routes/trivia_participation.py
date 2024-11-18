@@ -65,14 +65,13 @@ def submit_answers(participation_id: int, participation_answer: ParticipationAns
     db.commit()
     return {"message": "Answers submitted", "score": total_score}
 
+@router.get("/", response_model=List[TriviaParticipationOut])
+def get_all_participations(db: Session = Depends(get_db)):
+    # Obtener todas las participaciones
+    participations = db.query(TriviaParticipation).all()
 
-@router.get("/user/{user_id}", response_model=List[TriviaOut])
-def get_trivias_for_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+    # Si no se encontraron participaciones, lanzamos una excepción
+    if not participations:
+        raise HTTPException(status_code=404, detail="No participations found")
 
-    participations = db.query(TriviaParticipation).filter(TriviaParticipation.user_id == user_id).all()
-    trivias = [participation.trivia for participation in participations]
-
-    return trivias
+    return participations

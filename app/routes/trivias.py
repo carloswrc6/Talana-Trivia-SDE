@@ -39,3 +39,8 @@ def create_trivia(trivia: TriviaCreate, db: Session = Depends(get_db)):
 @router.get("/", response_model=List[TriviaOut])
 def get_trivias(db: Session = Depends(get_db)):
     return db.query(Trivia).all()
+
+@router.get("/user/{user_id}", response_model=List[TriviaOut])
+def get_trivias_for_user(user_id: int, db: Session = Depends(get_db)):
+    trivias = db.query(Trivia).join(Trivia.users).filter(User.id == user_id).all()
+    return trivias
