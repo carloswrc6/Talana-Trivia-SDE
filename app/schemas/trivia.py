@@ -24,6 +24,7 @@ class Answer(BaseModel):
 
 class ParticipationAnswer(BaseModel):
     answers: List[Answer]
+    user_id: int
 
 class TriviaParticipationCreate(BaseModel):
     trivia_id: int
