@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from app.database import engine, Base
-from app.routes import users, trivias, questions
+from app.routes import users, trivias, questions, trivia_participation
 
 # Importar todos los modelos para registrar relaciones en SQLAlchemy
 from app.models import user, trivia, answer, question
@@ -57,3 +57,4 @@ def health_check():
 app.include_router(users.router)
 app.include_router(questions.router)
 app.include_router(trivias.router)
+app.include_router(trivia_participation.router)

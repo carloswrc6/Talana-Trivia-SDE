@@ -17,5 +17,23 @@ class TriviaOut(BaseModel):
     questions: List[QuestionOut]  # Preguntas asociadas
     users: List[UserOut]  # Usuarios asociados
 
+# Esquema para responder preguntas
+class Answer(BaseModel):
+    question_id: int
+    answer_id: int  # ID de la respuesta seleccionada
+
+class ParticipationAnswer(BaseModel):
+    answers: List[Answer]
+
+class TriviaParticipationCreate(BaseModel):
+    trivia_id: int
+    user_id: int
+
+class TriviaParticipationOut(BaseModel):
+    trivia_id: int
+    user_id: int
+    score: int
+    completed: bool        
+
     class Config:
         from_attributes = True

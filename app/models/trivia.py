@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 from app.database import Base
 from app.models.user import User
 from app.models.question import Question
+from app.models.trivia_participation import TriviaParticipation
 
 class Trivia(Base):
     __tablename__ = "trivias"
@@ -20,3 +21,7 @@ class Trivia(Base):
     
     # Relación con usuarios (mediante la tabla intermedia)
     users = relationship("User", secondary="trivia_users", back_populates="trivias")
+
+    participations = relationship(
+        "TriviaParticipation", back_populates="trivia", cascade="all, delete-orphan"
+    )
