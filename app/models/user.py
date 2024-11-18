@@ -13,6 +13,5 @@ class User(Base):
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-    participations = relationship("Participant", back_populates="user", cascade="all, delete-orphan")
     # Relación con trivias
     trivias = relationship('Trivia', secondary=trivia_users, back_populates='users')

@@ -7,7 +7,7 @@ from app.database import engine, Base
 from app.routes import users, trivias, questions
 
 # Importar todos los modelos para registrar relaciones en SQLAlchemy
-from app.models import user, participant, trivia, score, answer, question
+from app.models import user, trivia, answer, question
 
 # Configuración de la aplicación FastAPI
 app = FastAPI(
@@ -55,5 +55,5 @@ def health_check():
 
 # Registrar las rutas de los diferentes módulos
 app.include_router(users.router)
-app.include_router(trivias.router)
 app.include_router(questions.router)
+app.include_router(trivias.router)

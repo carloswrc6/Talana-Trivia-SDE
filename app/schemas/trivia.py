@@ -1,22 +1,21 @@
+# schemas/trivia.py
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import List
 from app.schemas.question import QuestionOut
 from app.schemas.user import UserOut
 
 class TriviaCreate(BaseModel):
-    title: str
-    description: Optional[str]
-    creator_id: int  # ID del creador de la trivia
-    participant_ids: List[int]  # Lista de los IDs de los usuarios participantes
-    question_ids: List[int]  # Lista de IDs de preguntas
+    name: str
+    description: str
+    question_ids: List[int]  # IDs de las preguntas seleccionadas
+    user_ids: List[int]  # IDs de los usuarios que participarán
 
 class TriviaOut(BaseModel):
     id: int
-    title: str
+    name: str
     description: str
-    creator_id: int
-    participants: List[int]
-    questions: List[int]
+    questions: List[QuestionOut]  # Preguntas asociadas
+    users: List[UserOut]  # Usuarios asociados
 
     class Config:
         from_attributes = True

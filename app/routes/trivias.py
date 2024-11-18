@@ -1,49 +1,41 @@
+# routes/trivia.py
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.trivia import TriviaCreate, TriviaOut
-from sqlalchemy.exc import IntegrityError
-from app.models import Trivia, User, Participant, Question
+from app import crud, schemas
+from app.models.trivia import Trivia
+from app.models.user import User
+from app.models.question import Question
+from app.schemas.trivia import TriviaOut, TriviaCreate
 
 router = APIRouter(prefix="/trivias", tags=["Trivias"])
 
 @router.post("/", response_model=TriviaOut)
-async def create_trivia(
-    trivia: TriviaCreate, db: Session = Depends(get_db)
-):
-    # Verificar si los usuarios y preguntas existen en la base de datos
-    creator = db.query(User).filter(User.id == trivia.creator_id).first()
-    if not creator:
-        raise HTTPException(status_code=404, detail="Creator not found")
-    
-    participants = db.query(User).filter(User.id.in_(trivia.participant_ids)).all()
-    if len(participants) != len(trivia.participant_ids):
-        raise HTTPException(status_code=404, detail="Some participants not found")
-
+def create_trivia(trivia: TriviaCreate, db: Session = Depends(get_db)):
+    # Obtener las preguntas y usuarios de la base de datos
     questions = db.query(Question).filter(Question.id.in_(trivia.question_ids)).all()
+    users = db.query(User).filter(User.id.in_(trivia.user_ids)).all()
+
     if len(questions) != len(trivia.question_ids):
-        raise HTTPException(status_code=404, detail="Some questions not found")
+        raise HTTPException(status_code=404, detail="Algunas preguntas no se encuentran.")
+    if len(users) != len(trivia.user_ids):
+        raise HTTPException(status_code=404, detail="Algunos usuarios no se encuentran.")
 
     # Crear la trivia
-    new_trivia = Trivia(
-        title=trivia.title,
+    db_trivia = Trivia(
+        name=trivia.name,
         description=trivia.description,
-        creator_id=trivia.creator_id  # Asignar el creador
     )
+    db_trivia.questions = questions
+    db_trivia.users = users
 
-    # Agregar los participantes y las preguntas a la trivia
-    new_trivia.participants = participants
-    new_trivia.questions = questions
-
-    db.add(new_trivia)
+    db.add(db_trivia)
     db.commit()
-    db.refresh(new_trivia)
+    db.refresh(db_trivia)
 
-    return TriviaOut(
-        id=new_trivia.id,
-        title=new_trivia.title,
-        description=new_trivia.description,
-        creator_id=new_trivia.creator_id,
-        participants=[user.id for user in new_trivia.participants],
-        questions=[question.id for question in new_trivia.questions]
-    )
+    return db_trivia
+
+@router.get("/", response_model=List[TriviaOut])
+def get_trivias(db: Session = Depends(get_db)):
+    return db.query(Trivia).all()

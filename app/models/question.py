@@ -29,9 +29,6 @@ class Question(Base):
     # Relación para las opciones de respuesta
     answers = relationship("Answer", back_populates="question", cascade="all, delete-orphan")
 
-    # Relación con los puntajes (si se requiere)
-    scores = relationship("Score", back_populates="question")
-    
     # Clave foránea para la relación con Trivia
     trivia_id = Column(Integer, ForeignKey('trivias.id'))
 

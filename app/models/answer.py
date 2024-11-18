@@ -19,4 +19,3 @@ class Answer(Base):
     )
 
     question = relationship("Question", back_populates="answers")
-    scores = relationship("Score", back_populates="answer")
