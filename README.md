@@ -44,16 +44,99 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
 ### 1. Usuarios
 **Crear Usuario** `POST /users`  
 **Descripción:** Crea un nuevo usuario.
-
+ 
 **Body**
+   ```bash
    {
       "name": "John Doe",
       "email": "john.doe@example.com"
    }
+   ```
 
 **Response:**
+   ```json
    {
       "id": 1,
       "name": "John Doe",
       "email": "john.doe@example.com"
    }
+   ```
+
+### 2. Obtener Usuarios
+**Obtener lista de usuarios** `GET /users`  
+**Descripción:** Obtiene todos los usuarios registrados.
+
+**Response:**
+   ```json
+   [
+      {
+         "id": 1,
+         "name": "John Doe",
+         "email": "john.doe@example.com"
+      },
+      {
+         "id": 2,
+         "name": "Jane Smith",
+         "email": "jane.smith@example.com"
+      }
+   ]
+   ```
+
+### 3. Preguntas
+**Crear Usuario** `POST /questions`  
+**Descripción:** Crea un nueva pregunta.
+ 
+**Body**
+   ```bash
+   {
+      "text": "questions 3",
+         // difficulty : easy, medium, hard
+      "difficulty": "hard",
+      "answers": [
+         {
+            "text": "answers a",
+            "is_correct": true
+         },
+         {
+            "text": "answers b",
+            "is_correct": false
+         },
+         {
+            "text": "answers c",
+            "is_correct": false
+         }
+      ]
+   }
+   ```
+
+**Response:**
+   ```json
+      {
+         "text": "questions 3",
+         "points": 2005,
+         "difficulty": "hard",
+         "id": 1,
+         "trivia_id": null,
+         "answers": [
+            {
+                  "is_correct": true,
+                  "text": "answers a",
+                  "id": 1,
+                  "question_id": 1
+            },
+            {
+                  "is_correct": false,
+                  "text": "answers b",
+                  "id": 2,
+                  "question_id": 1
+            },
+            {
+                  "is_correct": false,
+                  "text": "answers c",
+                  "id": 3,
+                  "question_id": 1
+            }
+         ]
+      }
+   ```
+ 
