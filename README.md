@@ -26,6 +26,9 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
 3. Configura las variables de entorno necesarias en un archivo .env:
    ```bash
    DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/talatrivia
+   POSTGRES_USER=user
+   POSTGRES_PASSWORD=password
+   POSTGRES_DB=talatrivia
 
 4. Levanta el servidor de desarrollo:
    ```bash
@@ -39,8 +42,7 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
 ## Endpoints Disponibles
 
 ### 1. Usuarios
-**Crear Usuario**  
-`POST /users`  
+**Crear Usuario** `POST /users`  
 **Descripción:** Crea un nuevo usuario.
 
 **Body:**
@@ -50,7 +52,7 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
   "email": "john.doe@example.com"
 }
 
-**Response:**
+Response:
 ```json
 {
   "id": 1,
