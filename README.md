@@ -45,17 +45,15 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
 **Crear Usuario** `POST /users`  
 **Descripción:** Crea un nuevo usuario.
 
-Body
-   ```json
+**Body**
    {
-   "name": "John Doe",
-   "email": "john.doe@example.com"
+      "name": "John Doe",
+      "email": "john.doe@example.com"
    }
 
-Response:
-   ```json
+**Response:**
    {
-   "id": 1,
-   "name": "John Doe",
-   "email": "john.doe@example.com"
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@example.com"
    }
