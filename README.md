@@ -241,7 +241,7 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
    } 
    ```
  
-## 6. Obtener Trivia
+### 6. Obtener Trivia
 **Obtener lista de Trivias** `GET /trivias`  
 **Descripción:** Obtiene todos las trivias registradas.
  
@@ -291,8 +291,8 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
    ]
    ```
 
-## 7. Obtener Trivia por Usuario
-**Obtener lista de trivias por usuario** `GET /trivias/user/{id}`  
+### 7. Obtener Trivia por Usuario
+**Obtener lista de trivias por usuario** `GET /trivias/user/{id_user}`  
 **Descripción:** Obtiene todas las trivias asociadas a un usuario.
  
 **Response:**
@@ -333,3 +333,97 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
     }
    ]
    ```
+
+### 8. Participacion
+**Crear Trivia** `POST /participations`  
+**Descripción:** Cuando un usuario comienza la trivia, se genera un registro para rastrear su estado. Después de este registro, el usuario podrá comenzar a responder las preguntas.
+ 
+**Body**
+   ```bash
+   {
+    "trivia_id":1,
+    "user_id":1
+   }
+   ```
+
+**Response:**
+   ```json
+   {
+    "id": 1,
+    "trivia_id": 1,
+    "user_id": 1,
+    "score": 0,
+    "completed": false
+   }
+   ```
+ 
+### 9. Obtener Participaciones
+**Obtener lista de Participaciones** `GET /participations`  
+**Descripción:** Obtiene todas las participaciones registradas.
+ 
+**Response:**
+   ```json
+   [
+    {
+        "id": 1,
+        "trivia_id": 1,
+        "user_id": 1,
+        "score": 0,
+        "completed": false
+    }
+   ]
+   ```
+
+### 10. Responder Trivia
+**Crear Trivia** `POST /participations/{id_participation}/answer`  
+**Descripción:** Anteriormente se proporcionaban las preguntas y respuestas, pero ahora solo debemos enviar los valores necesarios para participar en la trivia (usuario, preguntas y respuestas) y luego nos devuelve nuestro puntaje.
+ 
+**Body**
+   ```bash
+   {
+    "user_id": 1,
+    "answers": [
+        {
+        "question_id": 1,
+        "answer_id": 2
+        },
+        {
+        "question_id": 2,
+        "answer_id": 4
+        }
+        ,
+        {
+        "question_id": 3,
+        "answer_id": 9
+        }
+    ]
+   }
+
+   ```
+
+**Response:**
+   ```json
+   {
+    "message": "Answers submitted",
+    "score": 0
+   }
+   ```
+
+### 11. Obtener Ranking
+**Obtener lista de rankings por trivia** `GET /ranking/{id_trivia}/ranking`  
+**Descripción:** Rankings de usuarios por trivia
+ 
+**Response:**
+   ```json
+   {
+    "trivia_id": 1,
+    "trivia_name": "Trivia 1",
+    "rankings": [
+        {
+            "user_id": 1,
+            "user_name": "carloswrc3",
+            "score": 0
+        }
+    ]
+   }
+   ```   
