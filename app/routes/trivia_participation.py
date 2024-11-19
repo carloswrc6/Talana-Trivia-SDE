@@ -44,6 +44,7 @@ def create_participation(participation: TriviaParticipationCreate, db: Session =
 
 @router.post("/{participation_id}/answer")
 def submit_answers(participation_id: int, participation_answer: ParticipationAnswer, db: Session = Depends(get_db)):
+    # Verificar si la participación existe
     participation = db.query(TriviaParticipation).filter(TriviaParticipation.id == participation_id).first()
     if not participation:
         raise HTTPException(status_code=404, detail="Participation not found")
@@ -52,24 +53,36 @@ def submit_answers(participation_id: int, participation_answer: ParticipationAns
     if participation.user_id != participation_answer.user_id:
         raise HTTPException(status_code=403, detail="User not authorized for this participation")
     
+    # Verificar si la trivia ya está completada
     if participation.completed:
         raise HTTPException(status_code=400, detail="Trivia already completed")
 
-    # Calcular puntaje y validar respuestas
+    # Obtener las preguntas asociadas a la trivia
+    trivia_questions = {q.id for q in participation.trivia.questions}
+
     total_score = 0
+
     for answer in participation_answer.answers:
         # Verificar si la pregunta existe
         question = db.query(Question).filter(Question.id == answer.question_id).first()
         if not question:
             raise HTTPException(status_code=404, detail=f"Question {answer.question_id} not found")
         
+        # Verificar si la pregunta pertenece a la trivia
+        if answer.question_id not in trivia_questions:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Question {answer.question_id} does not belong to this trivia"
+            )
+        
         # Validar si la respuesta es una opción válida de la pregunta
-        correct_answer = next((opt for opt in question.answers if opt.is_correct), None)
         selected_answer = next((opt for opt in question.answers if opt.id == answer.answer_id), None)
 
-        # Si la respuesta seleccionada no existe o no corresponde a una de las opciones válidas
         if not selected_answer:
-            raise HTTPException(status_code=400, detail=f"Invalid answer {answer.answer_id} for question {answer.question_id}")
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Invalid answer {answer.answer_id} for question {answer.question_id}"
+            )
         
         # Verificar si la respuesta seleccionada es correcta
         is_correct = selected_answer.is_correct
