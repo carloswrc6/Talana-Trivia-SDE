@@ -11,8 +11,8 @@ class Answer(Base):
     is_correct = Column(Boolean, nullable=False)
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
 
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    # created_at = Column(DateTime, server_default=func.now())
+    # updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     __table_args__ = (
         UniqueConstraint("text", "question_id", name="unique_answer_per_question"),

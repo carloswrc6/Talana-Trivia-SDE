@@ -17,6 +17,12 @@ class TriviaOut(BaseModel):
     questions: List[QuestionOut]  # Preguntas asociadas
     users: List[UserOut]  # Usuarios asociados
 
+class TriviaUserOut(BaseModel):
+    id: int
+    name: str
+    description: str
+    questions: List[QuestionOut]  # Preguntas asociadas
+
 # Esquema para responder preguntas
 class Answer(BaseModel):
     question_id: int

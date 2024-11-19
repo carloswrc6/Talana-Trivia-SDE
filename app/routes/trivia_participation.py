@@ -14,7 +14,17 @@ router = APIRouter(prefix="/participations", tags=["Participations"])
 
 @router.post("/", response_model=TriviaParticipationOut)
 def create_participation(participation: TriviaParticipationCreate, db: Session = Depends(get_db)):
-    # Verificar si el usuario ya está participando
+    # Verificar si la trivia existe
+    trivia = db.query(Trivia).filter(Trivia.id == participation.trivia_id).first()
+    if not trivia:
+        raise HTTPException(status_code=404, detail="Trivia not found")
+    
+    # Verificar si el usuario existe
+    user = db.query(User).filter(User.id == participation.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Verificar si el usuario ya está participando en la trivia
     existing = db.query(TriviaParticipation).filter(
         TriviaParticipation.trivia_id == participation.trivia_id,
         TriviaParticipation.user_id == participation.user_id
@@ -37,22 +47,35 @@ def submit_answers(participation_id: int, participation_answer: ParticipationAns
     participation = db.query(TriviaParticipation).filter(TriviaParticipation.id == participation_id).first()
     if not participation:
         raise HTTPException(status_code=404, detail="Participation not found")
-    if participation.user_id != participation_answer.user_id:  # Usar el user_id del body
+    
+    # Verificar si el usuario que envía la respuesta es el mismo de la participación
+    if participation.user_id != participation_answer.user_id:
         raise HTTPException(status_code=403, detail="User not authorized for this participation")
+    
     if participation.completed:
         raise HTTPException(status_code=400, detail="Trivia already completed")
 
-    # Calcular puntaje
+    # Calcular puntaje y validar respuestas
     total_score = 0
     for answer in participation_answer.answers:
+        # Verificar si la pregunta existe
         question = db.query(Question).filter(Question.id == answer.question_id).first()
         if not question:
             raise HTTPException(status_code=404, detail=f"Question {answer.question_id} not found")
+        
+        # Validar si la respuesta es una opción válida de la pregunta
         correct_answer = next((opt for opt in question.answers if opt.is_correct), None)
-        is_correct = correct_answer and correct_answer.id == answer.answer_id
+        selected_answer = next((opt for opt in question.answers if opt.id == answer.answer_id), None)
+
+        # Si la respuesta seleccionada no existe o no corresponde a una de las opciones válidas
+        if not selected_answer:
+            raise HTTPException(status_code=400, detail=f"Invalid answer {answer.answer_id} for question {answer.question_id}")
+        
+        # Verificar si la respuesta seleccionada es correcta
+        is_correct = selected_answer.is_correct
         total_score += question.points if is_correct else 0
 
-        # Registrar la respuesta
+        # Registrar la respuesta del usuario
         participation_answer = TriviaParticipationAnswer(
             participation_id=participation_id,
             question_id=answer.question_id,
@@ -60,9 +83,11 @@ def submit_answers(participation_id: int, participation_answer: ParticipationAns
         )
         db.add(participation_answer)
 
+    # Actualizar el puntaje de la participación y marcarla como completada
     participation.score = total_score
     participation.completed = True
     db.commit()
+
     return {"message": "Answers submitted", "score": total_score}
 
 @router.get("/", response_model=List[TriviaParticipationOut])

@@ -13,8 +13,8 @@ class Trivia(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)  # Nombre de la trivia
     description = Column(String, nullable=True)  # Descripción de la trivia
-    created_at = Column(DateTime, server_default=func.now())  # Fecha de creación
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())  # Fecha de actualización
+    # created_at = Column(DateTime, server_default=func.now())  # Fecha de creación
+    # updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())  # Fecha de actualización
 
     # Relación con preguntas
     questions = relationship("Question", back_populates="trivia")
