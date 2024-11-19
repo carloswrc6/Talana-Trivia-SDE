@@ -45,7 +45,7 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
 **Crear Usuario** `POST /users`  
 **Descripción:** Crea un nuevo usuario.
 
-**Body:**
+Body
    ```json
    {
    "name": "John Doe",
