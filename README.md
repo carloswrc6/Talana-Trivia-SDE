@@ -111,32 +111,68 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
 
 **Response:**
    ```json
-      {
-         "text": "questions 3",
-         "points": 2005,
-         "difficulty": "hard",
-         "id": 1,
-         "trivia_id": null,
-         "answers": [
-            {
-                  "is_correct": true,
-                  "text": "answers a",
-                  "id": 1,
-                  "question_id": 1
-            },
-            {
-                  "is_correct": false,
-                  "text": "answers b",
-                  "id": 2,
-                  "question_id": 1
-            },
-            {
-                  "is_correct": false,
-                  "text": "answers c",
-                  "id": 3,
-                  "question_id": 1
-            }
-         ]
-      }
+   {
+      "text": "questions 3",
+      "points": 2005,
+      "difficulty": "hard",
+      "id": 1,
+      "trivia_id": null,
+      "answers": [
+         {
+               "is_correct": true,
+               "text": "answers a",
+               "id": 1,
+               "question_id": 1
+         },
+         {
+               "is_correct": false,
+               "text": "answers b",
+               "id": 2,
+               "question_id": 1
+         },
+         {
+               "is_correct": false,
+               "text": "answers c",
+               "id": 3,
+               "question_id": 1
+         }
+      ]
+   }
    ```
  
+ 
+### 4. Obtener Preguntas
+**Crear Usuario** `GET /questions`  
+**Descripción:** Obtiene todos las preguntas registrados.
+ 
+**Response:**
+   ```bash
+   [
+    {
+        "id": 1,
+        "text": "questions 3",
+        "difficulty": "hard",
+        "points": 2005,
+        "answers": [
+            {
+                "id": 1,
+                "text": "answers a",
+                "is_correct": true,
+                "question_id": 1
+            },
+            {
+                "id": 2,
+                "text": "answers b",
+                "is_correct": false,
+                "question_id": 1
+            },
+            {
+                "id": 3,
+                "text": "answers c",
+                "is_correct": false,
+                "question_id": 1
+            }
+        ]
+    }
+   ]
+   ```
