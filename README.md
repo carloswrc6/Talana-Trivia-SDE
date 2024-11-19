@@ -83,7 +83,7 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
    ```
 
 ### 3. Preguntas
-**Crear Usuario** `POST /questions`  
+**Crear Preguntas** `POST /questions`  
 **Descripción:** Crea un nueva pregunta.
  
 **Body**
@@ -142,11 +142,11 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
  
  
 ### 4. Obtener Preguntas
-**Crear Usuario** `GET /questions`  
+**Obtener lista de preguntas** `GET /questions`  
 **Descripción:** Obtiene todos las preguntas registrados.
  
 **Response:**
-   ```bash
+   ```json
    [
     {
         "id": 1,
@@ -171,6 +171,163 @@ Bienvenido a **TalaTrivia**, una API diseñada para gestionar un emocionante jue
                 "text": "answers c",
                 "is_correct": false,
                 "question_id": 1
+            }
+        ]
+    }
+   ]
+   ```
+
+### 5. Trivia
+**Crear Trivia** `POST /trivias`  
+**Descripción:** Crea un nueva Trivia.
+ 
+**Body**
+   ```bash
+   {
+    "name": "Trivia 1",
+    "description": "Description 1",
+    "user_ids": [
+        1 
+        // 1, 2, 3
+    ],
+    "question_ids": [
+        1
+        // 1, 2, 3
+    ]
+   }
+   ```
+
+**Response:**
+   ```json
+   {
+    "id": 1,
+    "name": "Trivia 1",
+    "description": "Description 1",
+    "questions": [
+        {
+            "id": 1,
+            "text": "questions 3",
+            "difficulty": "hard",
+            "points": 2005,
+            "answers": [
+                {
+                    "id": 1,
+                    "text": "answers a",
+                    "is_correct": true,
+                    "question_id": 1
+                },
+                {
+                    "id": 2,
+                    "text": "answers b",
+                    "is_correct": false,
+                    "question_id": 1
+                },
+                {
+                    "id": 3,
+                    "text": "answers c",
+                    "is_correct": false,
+                    "question_id": 1
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "name": "carloswrc3",
+            "email": "carloswrc3@gmail.com"
+        }
+    ]
+   } 
+   ```
+ 
+## 6. Obtener Trivia
+**Obtener lista de Trivias** `GET /trivias`  
+**Descripción:** Obtiene todos las trivias registradas.
+ 
+**Response:**
+   ```json
+   [
+    {
+        "id": 1,
+        "name": "Trivia 1",
+        "description": "Description 1",
+        "questions": [
+            {
+                "id": 1,
+                "text": "questions 3",
+                "difficulty": "hard",
+                "points": 2005,
+                "answers": [
+                    {
+                        "id": 1,
+                        "text": "answers a",
+                        "is_correct": true,
+                        "question_id": 1
+                    },
+                    {
+                        "id": 2,
+                        "text": "answers b",
+                        "is_correct": false,
+                        "question_id": 1
+                    },
+                    {
+                        "id": 3,
+                        "text": "answers c",
+                        "is_correct": false,
+                        "question_id": 1
+                    }
+                ]
+            }
+        ],
+        "users": [
+            {
+                "id": 1,
+                "name": "carloswrc3",
+                "email": "carloswrc3@gmail.com"
+            }
+        ]
+    }
+   ]
+   ```
+
+## 7. Obtener Trivia por Usuario
+**Obtener lista de trivias por usuario** `GET /trivias/user/{id}`  
+**Descripción:** Obtiene todas las trivias asociadas a un usuario.
+ 
+**Response:**
+   ```json
+   [
+    {
+        "id": 1,
+        "name": "Trivia 1",
+        "description": "Description 1",
+        "questions": [
+            {
+                "id": 1,
+                "text": "questions 3",
+                "difficulty": "hard",
+                "points": 2005,
+                "answers": [
+                    {
+                        "id": 1,
+                        "text": "answers a",
+                        "is_correct": true,
+                        "question_id": 1
+                    },
+                    {
+                        "id": 2,
+                        "text": "answers b",
+                        "is_correct": false,
+                        "question_id": 1
+                    },
+                    {
+                        "id": 3,
+                        "text": "answers c",
+                        "is_correct": false,
+                        "question_id": 1
+                    }
+                ]
             }
         ]
     }
